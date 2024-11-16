@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.register {
+    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url("./img/bg2.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    height: 100vh;
+    width: 100%;
+}
+
+.email{
+    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url("./img/bg2.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    height: 100vh;
+    width: 100%;   
+}
+
+.password{
+    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url("./img/bg2.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    height: 100vh;
+    width: 100%;
+}
+.forgot{
+    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url("./img/bg2.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    height: 100vh;
+    width: 100%;
+}
+
+.input {
+    width: 100%; /* w-full */
+    color: white; /* text-white */
+    height: 2.5rem; /* h-10 */
+    padding: 0.5rem; /* padding */
+    border: 1px solid rgba(61, 184, 218, 0.1); /* input-bordered */
+    border-radius: 0.5rem; /* rounded */
+    backdrop-filter: blur(20px); /* backdrop-blur-2xl */
+    background-clip: padding-box; /* bg-clip-padding */
+    background-color: rgba(255, 255, 255, 0.1); /* bg-opacity-10 */
+    transition: all 0.3s ease; /* transition-all duration-300 */
+  }
+  
+  .input:focus {
+    background-color: rgba(255, 255, 255, 0.5); /* focus:bg-opacity-50 */
+    border-color: #3db8da; /* focus:border-[#3db8da] */
+    outline: none;
+    box-shadow: 0 0 0 2px #3db8da; /* focus:ring-2 focus:ring-[#3db8da] */
+  }
+
+  .profile{
+    width: 100%; /* w-full */
+    color: white; /* text-white */
+    height: 3rem; /* h-10 */
+    padding: 0.5rem; /* padding */
+    border: 1px solid rgba(61, 184, 218, 0.1); /* input-bordered */
+    border-radius: 0.5rem; /* rounded */
+    backdrop-filter: blur(20px); /* backdrop-blur-2xl */
+    background-clip: padding-box; /* bg-clip-padding */
+    background-color: rgba(255, 255, 255, 0.1); /* bg-opacity-10 */
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+  }
+
+  .profile:focus {
+    background-color: rgba(255, 255, 255, 0.5); /* focus:bg-opacity-50 */
+    border-color: #3db8da; /* focus:border-[#3db8da] */
+    outline: none;
+    box-shadow: 0 0 0 2px #3db8da; 
+  }
+  
