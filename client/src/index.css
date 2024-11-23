@@ -2,7 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
-
+.home{
+    background-color: blanchedalmond;
+    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url("./img/chat-bg.webp");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    height: 100vh;
+    width: 100%;
+    
+}
 .register {
     background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url("./img/bg2.jpg");
     background-size: cover;
@@ -86,3 +96,25 @@
     box-shadow: 0 0 0 2px #3db8da; 
   }
   
+  
+  /* Scrollbar genişliği */
+.scrollbar::-webkit-scrollbar {
+  width: 8px; /* Kaydırma çubuğu genişliği */
+}
+
+/* Scrollbar arka planı */
+.scrollbar::-webkit-scrollbar-track {
+  background: #240263; /* Koyu gri arka plan */
+  border-radius: 10px; /* Yuvarlak köşeler */
+}
+
+/* Scrollbar kaydırıcı */
+.scrollbar::-webkit-scrollbar-thumb {
+  background: #4a5568; /* Daha açık gri kaydırıcı */
+  border-radius: 10px; /* Yuvarlak köşeler */
+}
+
+/* Scrollbar hover efekti */
+.scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #718096; /* Hover sırasında daha açık bir renk */
+}

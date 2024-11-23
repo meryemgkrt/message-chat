@@ -4,6 +4,8 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { LuUserCircle2 } from "react-icons/lu";
 import Avatar from "../components/Avatar";
+import { useDispatch } from "react-redux";
+import { setToken, setUser } from "../redux/userSlice";
 const CheckPasswordPage = () => {
   const [formData, setFormData] = useState({
     password: "",
@@ -12,6 +14,7 @@ const CheckPasswordPage = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
+  const disparch= useDispatch();
 
   console.log("location", location.state);
 
@@ -46,7 +49,13 @@ const CheckPasswordPage = () => {
         withCredentials: true,
       });
       toast.success(res.data.message || "Şifre doğrulama başarılı!");
+
+  
+
       if(res.data.success){
+        disparch(setToken(res?.data?.token));
+       
+        localStorage.setItem("token", res?.data?.token);
         setFormData({
           password: "",
         })

@@ -7,6 +7,7 @@ import Home from "../chatPages/Home";
 import MessagePages from "../components/MessagePages";
 import AuthLayouts from "../layout";
 import ForgotPassord from "../chatPages/ForgotPassord";
+import Sidebar from "../components/Sidebar";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
           </AuthLayouts>
         ),
         children: [
+         /*  {
+            path: ":userId",
+            element: <Sidebar />,
+          }, */
           {
             path: ":userId", // Dinamik parametre ":" ile belirtilmeli
             element: <MessagePages />,

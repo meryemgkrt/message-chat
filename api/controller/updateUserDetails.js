@@ -1,35 +1,36 @@
-const generateToken = require("../helpers/generateToken")
+const generateToken = require("../helpers/generateToken");
 
-const UserModel = require("../models/UserModel")
+const UserModel = require("../models/UserModel");
 
-async function updateUserDetails(request,response){
-    try {
-        const token = request.cookies.token || ""
+async function updateUserDetails(request, response) {
+  try {
+    const token = request.cookies.token || "";
 
-        const user = await generateToken(token)
+    const user = await generateToken(token);
 
-        const { name, profile_pic } = request.body
+    const { name, profile_pic } = request.body;
 
-        const updateUser = await UserModel.updateOne({ _id : user._id },{
-            name,
-            profile_pic
-        })
+    const updateUser = await UserModel.updateOne(
+      { _id: user._id },
+      {
+        name,
+        profile_pic,
+      }
+    );
 
-        const userInfomation = await UserModel.findById(user._id)
+    const userInfomation = await UserModel.findById(user._id);
 
-        return response.json({
-            message : "user update successfully",
-            data : userInfomation,
-            success : true
-        })
-
-
-    } catch (error) {
-        return response.status(500).json({
-            message : error.message || error,
-            error : true
-        })
-    }
+    return response.json({
+      message: "user update successfully",
+      data: userInfomation,
+      success: true,
+    });
+  } catch (error) {
+    return response.status(500).json({
+      message: error.message || error,
+      error: true,
+    });
+  }
 }
 
-module.exports = updateUserDetails
+module.exports = updateUserDetails;
