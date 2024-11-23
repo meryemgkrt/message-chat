@@ -121,7 +121,7 @@ const Sidebar = () => {
 
       {/* Main Content */}
       <div className="w-full">
-        <div className="h-16 flex items-center bg-purple-300">
+        <div className="h-16 flex items-center bg-purple-400">
           <h2 className="text-xl font-bold p-4 text-slate-800">Message</h2>
         </div>
         <div className="bg-purple-100 p-[0.5px]"></div>
