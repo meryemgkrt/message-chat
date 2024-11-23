@@ -120,7 +120,7 @@ const Sidebar = () => {
       </div>
 
       {/* Main Content */}
-      <div className="w-full">
+      <div className="w-full mt-2">
         <div className="h-16 flex items-center bg-purple-400">
           <h2 className="text-xl font-bold p-4 text-slate-800">Message</h2>
         </div>
@@ -132,7 +132,7 @@ const Sidebar = () => {
                 <FiArrowUpLeft size={50} />
               </div>
               <p className="text-lg text-center text-slate-400">
-                Explore users to start a conversation with.
+                Explore users to start a conversation withhh.
               </p>
             </div>
           ) : (
