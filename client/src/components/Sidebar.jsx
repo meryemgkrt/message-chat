@@ -6,98 +6,91 @@ import { BiBell } from "react-icons/bi";
 import { NavLink } from "react-router-dom";
 import Avatar from "./Avatar";
 import { useSelector } from "react-redux";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import EditUserDetails from "./EditUserDetails";
-import { FiArrowUpLeft } from "react-icons/fi";
+import SearcEdit from "./SearcEdit";
 
 const Sidebar = () => {
   const user = useSelector((state) => state?.user);
   const [editUserOpen, setEditUserOpen] = useState(false);
-  const [allUsers, setAllUsers] = useState([]);
   const [openSearch, setOpenSearch] = useState(false);
 
-  useEffect(() => {
-    // Dummy user data or real socket connection logic can go here.
-    setAllUsers([]);
-  }, []);
-
   const handleLogout = () => {
-    // Add logout logic
     console.log("Logged out");
   };
 
   return (
-    <div className="w-full h-full grid grid-cols-[48px,1fr] bg-purple-200">
+    <div className="w-full h-full grid grid-cols-[60px,1fr] bg-purple-200 relative">
       {/* Sidebar */}
-      <div className="bg-purple-600 w-22 h-full rounded-tr-lg rounded-br-lg py-5 text-white flex flex-col justify-between">
-        {/* Icons */}
-        <div className="flex flex-col items-center">
+      <div className="bg-purple-600 h-full rounded-tr-lg rounded-br-lg py-5 flex flex-col justify-between items-center">
+        {/* Icons Section */}
+        <div className="flex flex-col items-center gap-4">
           <NavLink
             to="/home"
             title="Home"
             className={({ isActive }) =>
-              `w-12 h-12 flex justify-center items-center cursor-pointer hover:bg-purple-700 rounded-full ${
-                isActive ? "bg-purple-800" : ""
+              `w-12 h-12 flex justify-center items-center cursor-pointer rounded-full ${
+                isActive
+                  ? "bg-purple-800 text-black"
+                  : "bg-transparent text-white hover:bg-purple-700 hover:text-black"
               }`
             }
           >
-            <MdOutlineHome size={20} />
+            <MdOutlineHome size={24} />
           </NavLink>
-
-          <NavLink
-            to="/add-user"
+          <button
             title="Add User"
-            onClick={()=>setOpenSearch(true)}
-            className={({ isActive }) =>
-              `w-12 h-12 flex justify-center items-center cursor-pointer hover:bg-purple-700 rounded-full ${
-                isActive ? "bg-purple-800" : ""
-              }`
-            }
+            onClick={() => setOpenSearch(true)}
+            className="w-12 h-12 flex justify-center items-center cursor-pointer rounded-full bg-transparent text-white hover:bg-purple-700 hover:text-black"
           >
-            <FaUserPlus size={20} />
-          </NavLink>
+            <FaUserPlus size={24} />
+          </button>
 
           <NavLink
             to="/chat"
             title="Chat"
             className={({ isActive }) =>
-              `w-12 h-12 flex justify-center items-center cursor-pointer hover:bg-purple-700 rounded-full ${
-                isActive ? "bg-purple-800" : ""
+              `w-12 h-12 flex justify-center items-center cursor-pointer rounded-full ${
+                isActive
+                  ? "bg-purple-800 text-black"
+                  : "bg-transparent text-white hover:bg-purple-700 hover:text-black"
               }`
             }
           >
-            <IoChatbubbleEllipsesSharp size={20} />
+            <IoChatbubbleEllipsesSharp size={24} />
           </NavLink>
-
           <NavLink
             to="/notifications"
             title="Notifications"
             className={({ isActive }) =>
-              `w-12 h-12 flex justify-center items-center cursor-pointer hover:bg-purple-700 rounded-full ${
-                isActive ? "bg-purple-800" : ""
+              `w-12 h-12 flex justify-center items-center cursor-pointer rounded-full ${
+                isActive
+                  ? "bg-purple-800 text-black"
+                  : "bg-transparent text-white hover:bg-purple-700 hover:text-black"
               }`
             }
           >
-            <BiBell size={20} />
+            <BiBell size={24} />
           </NavLink>
-
           <NavLink
             to="/settings"
             title="Settings"
             className={({ isActive }) =>
-              `w-12 h-12 flex justify-center items-center cursor-pointer hover:bg-purple-700 rounded-full ${
-                isActive ? "bg-purple-800" : ""
+              `w-12 h-12 flex justify-center items-center cursor-pointer rounded-full ${
+                isActive
+                  ? "bg-purple-800 text-black"
+                  : "bg-transparent text-white hover:bg-purple-700 hover:text-black"
               }`
             }
           >
-            <MdOutlineSettings size={20} />
+            <MdOutlineSettings size={24} />
           </NavLink>
         </div>
 
-        {/* Profile and Logout */}
+        {/* Profile and Logout Section */}
         <div className="flex flex-col items-center gap-4">
           <button
-            className="w-12 h-12 flex justify-center items-center cursor-pointer hover:bg-purple-700 rounded-full"
+            className="w-12 h-12 flex justify-center items-center cursor-pointer rounded-full bg-transparent text-white hover:bg-purple-700 hover:text-black"
             title={user?.name}
             onClick={() => setEditUserOpen(true)}
           >
@@ -111,47 +104,38 @@ const Sidebar = () => {
           </button>
           <button
             title="Logout"
-            className="w-12 h-12 flex justify-center items-center cursor-pointer hover:bg-purple-700 rounded-full"
+            className="w-12 h-12 flex justify-center items-center cursor-pointer rounded-full bg-transparent text-white hover:bg-purple-700 hover:text-black"
             onClick={handleLogout}
           >
-            <TbLogout2 size={20} />
+            <TbLogout2 size={24} />
           </button>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="w-full mt-2">
+      <div className="w-full">
         <div className="h-16 flex items-center bg-purple-400">
           <h2 className="text-xl font-bold p-4 text-slate-800">Message</h2>
         </div>
         <div className="bg-purple-100 p-[0.5px]"></div>
-        <div className="h-[calc(100vh-65px)] overflow-y-auto p-4 scrollbar">
-          {allUsers.length === 0 ? (
-            <div className="mt-12">
-              <div className="flex justify-center items-center my-4 text-slate-500">
-                <FiArrowUpLeft size={50} />
-              </div>
-              <p className="text-lg text-center text-slate-400">
-                Explore users to start a conversation withhh.
-              </p>
-            </div>
-          ) : (
-            <div>Main content goes here.</div>
-          )}
+        <div className="h-[calc(100vh-65px)] overflow-y-auto p-4">
+          {/* Main content or user list can go here */}
         </div>
       </div>
 
-      {/* Edit User Details */}
-      {editUserOpen && (
-        <EditUserDetails onClose={() => setEditUserOpen(false)} user={user} />
+      {/* Search User */}
+      {openSearch && (
+        <div className="absolute top-0 left-0 w-full h-full z-50 flex items-center justify-center">
+          <SearcEdit onClose={() => setOpenSearch(false)} />
+        </div>
       )}
 
-      {/* Search User */}
-      {
-        openSearch && (
-          <SearcEdit  onClose={()=>setEditUserOpen(false)} />
-        )
-      }
+      {/* Edit User Details */}
+      {editUserOpen && (
+        <div className="absolute top-0 left-0 w-full h-full z-40">
+          <EditUserDetails onClose={() => setEditUserOpen(false)} user={user} />
+        </div>
+      )}
     </div>
   );
 };
