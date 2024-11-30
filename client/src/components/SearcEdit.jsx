@@ -46,8 +46,8 @@ return (
                   onChange={(e)=>setSearch(e.target.value)}
                   value={search}
               />
-              <div className='h-14 w-14 flex justify-center items-center'>
-                  <IoSearchOutline size={25}/>
+              <div className='h-14 w-14 flex text-purple-600 justify-center items-center'>
+                  <IoSearchOutline  size={25}/>
               </div>
           </div>
 
@@ -80,8 +80,8 @@ return (
           </div>
       </div>
 
-      <div className='absolute top-0 right-0 text-2xl p-2 lg:text-4xl hover:text-white' onClick={onClose}>
-          <button>
+      <div className='absolute top-0 right-0 text-3xl p-2 lg:text-4xl hover:text-red-600 transition-all' onClick={onClose}>
+          <button >
               <IoClose/>
           </button>
       </div>

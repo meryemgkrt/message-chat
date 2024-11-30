@@ -14,7 +14,7 @@ const RegisterChat = () => {
     profile_pic: "", // Burada profile_pic kullanılıyor
   });
 
-  const navigate =useNavigate();
+  const navigate = useNavigate();
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -61,7 +61,7 @@ const RegisterChat = () => {
 
       // Başarılı bir yanıt varsa mesajı göster
       toast.success(res.data.message);
-      if(res.data.success){
+      if (res.data.success) {
         setFormData({
           name: "",
           email: "",
@@ -179,10 +179,10 @@ const RegisterChat = () => {
         <p className="mt-2 text-sm flex justify-center items-center text-white">
           Already have an account?
           <Link
-            to="/login"
+            to="/email"
             className="hover:underline hover:text-[#3db8da] hover:font-semibold hover:text-lg ml-1"
           >
-            Login
+            Email
           </Link>
         </p>
       </div>

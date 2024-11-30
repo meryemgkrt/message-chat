@@ -7,49 +7,41 @@ import Home from "../chatPages/Home";
 import MessagePages from "../components/MessagePages";
 import AuthLayouts from "../layout";
 import ForgotPassord from "../chatPages/ForgotPassord";
-import Sidebar from "../components/Sidebar";
+
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <App />,
-    children: [
-      {
-        path: "/register",
-        element: <RegisterChat />,
-      },
-      {
-        path: "/email",
-        element: <CheckEmailPage />,
-      },
-      {
-        path: "/password",
-        element: <CheckPasswordPage />,
-      },
-      {
-        path:"forgot-password",
-        element: <ForgotPassord />,
-      },
-      {
-        path: "",
-        element: (
-          <AuthLayouts>
-            <Home />
-          </AuthLayouts>
-        ),
-        children: [
-         /*  {
-            path: ":userId",
-            element: <Sidebar />,
-          }, */
+      path : "/",
+      element : <App/>,
+      children : [
           {
-            path: ":userId", // Dinamik parametre ":" ile belirtilmeli
-            element: <MessagePages />,
+              path : "register",
+              element : <AuthLayouts><RegisterChat/></AuthLayouts>
           },
-        ],
-      },
-    ],
-  },
-]);
-
-export default router;
+          {
+              path : 'email',
+              element : <AuthLayouts><CheckEmailPage/></AuthLayouts>
+          },
+          {
+              path : 'password',
+              element : <AuthLayouts><CheckPasswordPage/></AuthLayouts>
+          },
+          {
+              path : 'forgot-password',
+              element : <AuthLayouts><ForgotPassord/></AuthLayouts>
+          },
+          {
+              path : "",
+              element : <Home/>,
+              children : [
+                  {
+                      path : ':userId',
+                      element : <MessagePages/>
+                  }
+              ]
+          }
+      ]
+  }
+  ])
+  
+  export default router

@@ -1,76 +1,113 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser, logout } from "../redux/userSlice";
 import Sidebar from "../components/Sidebar";
 import logo from "../img/lg1.webp";
+import { io } from "socket.io-client";
 
 const Home = () => {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const socketRef = useRef(null);
 
   const fetchUser = async () => {
     try {
       const URL = `${import.meta.env.VITE_BACKEND_URL}/api/user-details`;
 
-      console.log(import.meta.env.VITE_BACKEND_URL);
-
       const response = await axios.get(URL, {
         withCredentials: true,
       });
 
-      dispatch(setUser(response?.data?.data));
+      const userData = response?.data?.data;
 
-      if (response.data.data.logout) {
-        dispatch(logout());
-        navigate("/email");
+      if (userData) {
+        dispatch(setUser(userData));
+
+        if (userData.logout) {
+          dispatch(logout());
+          navigate("/email");
+        }
+
+        console.log("User data fetched", userData);
+      } else {
+        console.error("Failed to fetch user data.");
       }
-
-      console.log("response", response.data);
     } catch (error) {
-      console.error("error", error);
+      console.error("Fetch user error", error);
     }
   };
 
   useEffect(() => {
     fetchUser();
   }, []);
+
+  useEffect(() => {
+    if (user?.token) {
+      const socket = io(import.meta.env.VITE_BACKEND_URL, {
+        transports: ["websocket"],
+        auth: {
+          token: user.token,
+        },
+      });
+
+      socketRef.current = socket;
+
+      socket.on("connect", () => {
+        console.log("Connected to WebSocket server with token:", user.token);
+      });
+
+      socket.on("online", (onlineUsers) => {
+        console.log("Online users:", onlineUsers);
+      });
+
+      socket.on("connect_error", (err) => {
+        console.error("Connection error:", err.message);
+      });
+
+      socket.on("disconnect", () => {
+        console.log("Disconnected from WebSocket server");
+      });
+
+      return () => {
+        if (socketRef.current) {
+          socketRef.current.disconnect();
+          console.log("Socket disconnected during cleanup");
+        }
+      };
+    } else {
+      console.log("No user token found. WebSocket connection skipped.");
+    }
+  }, [user?.token]);
+
   const basePath = location.pathname === "/";
 
   return (
-    <div className="home grid lg:grid-cols-[350px,1fr] h-screen">
-      {/* Sidebar */}
-      <section
-        className={`bg-purple-400 ${
-         !basePath && "hidden"
-        } w-full lg:w-auto `}
-      >
+    <div className="grid lg:grid-cols-[300px,1fr] h-screen max-h-screen home">
+      <section className={`bg-bg home ${!basePath && "hidden"} lg:block`}>
         <Sidebar />
       </section>
 
-      {/* Main Content */}
-      <section className={`${basePath ? "hidden" : "block"} w-full`}>
+      {/**message component**/}
+      <section className={`${basePath && "hidden"}`}>
         <Outlet />
       </section>
 
-      {/* Default Welcome Screen */}
-      
-      <div className="lg:flex hidden bg-purple-300 bg-opacity-50 backdrop-blur-md flex-col justify-center items-center gap-2 p-4 text-center h-full shadow-lg rounded-lg">
-  <div className="flex justify-center items-center">
-    <img src={logo} alt="logo" className="w-24 h-24 md:w-40 md:h-40" />
-    <h1 className="font-bold text-xl md:text-3xl text-purple-800">
-      CHAT-APP
-    </h1>
-  </div>
-  <p className="text-lg text-center font-semibold md:text-lg text-gray-600">
-    Select a user to send a message
-  </p>
-</div>
-
-  
+      <div
+        className={`justify-center backdrop-blur-md bg-white/30 items-center flex-col gap-2 hidden ${
+          !basePath ? "hidden" : "lg:flex"
+        }`}
+      >
+        <div>
+          <img src={logo} width={250} alt="logo" />
+        </div>
+        <p className="text-lg mt-2 text-slate-500">
+          Select user to send message
+        </p>
+      </div>
     </div>
   );
 };
