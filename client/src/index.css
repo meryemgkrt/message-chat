@@ -67,7 +67,7 @@
   
   .input:focus {
     background-color: rgba(255, 255, 255, 0.5); /* focus:bg-opacity-50 */
-    border-color: #3db8da; /* focus:border-[#3db8da] */
+    border-color: #044557; /* focus:border-[#3db8da] */
     outline: none;
     box-shadow: 0 0 0 2px #3db8da; /* focus:ring-2 focus:ring-[#3db8da] */
   }
@@ -97,24 +97,32 @@
   }
   
   
-  /* Scrollbar genişliği */
+ /* Scrollbar yalnızca y ekseni */
+.scrollbar {
+  overflow-y: auto; /* Y ekseninde kaydırma */
+  overflow-x: hidden; /* X ekseninde kaydırmayı devre dışı bırak */
+}
+
+/* Scrollbar genişliği */
 .scrollbar::-webkit-scrollbar {
-  width: 8px; /* Kaydırma çubuğu genişliği */
+  width: 8px; /* Yatay scrollbar genişliği yok */
+  height: 0; /* X ekseni scrollbar'ı gizle */
 }
 
 /* Scrollbar arka planı */
 .scrollbar::-webkit-scrollbar-track {
-  background: #240263; /* Koyu gri arka plan */
+  background: #240263; /* Arka plan rengi */
   border-radius: 10px; /* Yuvarlak köşeler */
 }
 
 /* Scrollbar kaydırıcı */
 .scrollbar::-webkit-scrollbar-thumb {
-  background: #4a5568; /* Daha açık gri kaydırıcı */
+  background: #4a5568; /* Kaydırıcı rengi */
   border-radius: 10px; /* Yuvarlak köşeler */
 }
 
 /* Scrollbar hover efekti */
 .scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #718096; /* Hover sırasında daha açık bir renk */
+  background: #718096; /* Hover sırasında renk değişimi */
 }
+

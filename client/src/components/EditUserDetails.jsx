@@ -15,7 +15,7 @@ const EditUserDetails = ({ onClose, user }) => {
   const uploaPhotoRef = useRef();
   const dispatch = useDispatch();
 
-  // Kullanıcı bilgileri değiştiğinde formData'yı güncelle
+ 
   useEffect(() => {
     if (user) {
       setFormData((prev) => ({
@@ -90,7 +90,7 @@ const EditUserDetails = ({ onClose, user }) => {
   
 
   return (
-    <div className="fixed inset-0 bg-purple-400 bg-opacity-40 flex justify-center items-center z-50">
+    <div className="fixed inset-0 bg-purple-400 bg-opacity-40 flex justify-center items-center z-10">
       <div className="bg-white py-6 px-4 m-1 rounded w-full max-w-sm shadow-lg relative">
         <h2 className="font-semibold">Profile Details</h2>
         <p className="text-sm">Edit user details below.</p>

@@ -2,10 +2,10 @@ import axios from "axios";
 import React, { useEffect, useRef } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setUser, logout } from "../redux/userSlice";
+import { setUser, logout, setOnlineUser, setSocketConnection } from "../redux/userSlice";
 import Sidebar from "../components/Sidebar";
 import logo from "../img/lg1.webp";
-import { io } from "socket.io-client";
+import io from "socket.io-client";
 
 const Home = () => {
   const user = useSelector((state) => state.user);
@@ -14,6 +14,7 @@ const Home = () => {
   const location = useLocation();
   const socketRef = useRef(null);
 
+  console.log("User", user);
   const fetchUser = async () => {
     try {
       const URL = `${import.meta.env.VITE_BACKEND_URL}/api/user-details`;
@@ -45,43 +46,26 @@ const Home = () => {
     fetchUser();
   }, []);
 
-  useEffect(() => {
-    if (user?.token) {
-      const socket = io(import.meta.env.VITE_BACKEND_URL, {
-        transports: ["websocket"],
-        auth: {
-          token: user.token,
-        },
-      });
+ //socket connection
+ useEffect(() => {
+  const socketConnection = io(import.meta.env.VITE_BACKEND_URL, {
+    auth: {
+      token: localStorage.getItem("token"),
+    },
+  });
 
-      socketRef.current = socket;
+  socketConnection.on("onlineUser", (data) => {
+    console.log("online user", data);
+    dispatch(setOnlineUser(data));
+  });
 
-      socket.on("connect", () => {
-        console.log("Connected to WebSocket server with token:", user.token);
-      });
+  dispatch(setSocketConnection(socketConnection));
 
-      socket.on("online", (onlineUsers) => {
-        console.log("Online users:", onlineUsers);
-      });
+  return () => {
+    socketConnection.disconnect();
+  };
+}, []);
 
-      socket.on("connect_error", (err) => {
-        console.error("Connection error:", err.message);
-      });
-
-      socket.on("disconnect", () => {
-        console.log("Disconnected from WebSocket server");
-      });
-
-      return () => {
-        if (socketRef.current) {
-          socketRef.current.disconnect();
-          console.log("Socket disconnected during cleanup");
-        }
-      };
-    } else {
-      console.log("No user token found. WebSocket connection skipped.");
-    }
-  }, [user?.token]);
 
   const basePath = location.pathname === "/";
 

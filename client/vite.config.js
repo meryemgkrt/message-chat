@@ -17,8 +17,9 @@ export default defineConfig({
         ws: true, // WebSocket desteği
         changeOrigin: true, // Origin kontrolünü atlar
         secure: false, // HTTPS kullanmıyorsanız devre dışı bırakın
-        rewrite: (path) => path.replace(/^\/socket.io/, "/socket.io"),
+        rewrite: (path) => path.replace(/^\/socket.io/, ""),
       },
     },
   },
 });
+

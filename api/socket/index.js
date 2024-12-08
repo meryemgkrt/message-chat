@@ -1,61 +1,88 @@
-const express = require("express");
-const http = require("http");
-const { Server } = require("socket.io");
-const jwt = require("jsonwebtoken");
+const express = require('express');
+const { Server } = require('socket.io');
+const http = require('http');
+const generateToken = require('../helpers/generateToken');
+const UserModel = require('../models/UserModel');
+const { profile } = require('console');
 
 const app = express();
 const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000", // Frontend URL
+    origin: process.env.FRONTEND_URL,
     credentials: true,
   },
 });
 
-const onlineUsers = new Set(); // Çevrimiçi kullanıcıları takip eder
+const onlineUser = new Set();
 
-// Socket.IO bağlantı işlemi
-io.on("connection", (socket) => {
-  console.log(`Client connected: ${socket.id}`);
+io.on('connection', async (socket) => {
+  console.log("User connected:", socket.id);
 
-  // Token doğrulama ve kullanıcı kimliği kontrolü
   const token = socket.handshake.auth.token;
-
   if (!token) {
-    console.error("No token provided by client.");
-    return socket.disconnect(); // Token yoksa bağlantıyı sonlandır
+    console.error("No token provided. Disconnecting...");
+    return socket.disconnect(true);
   }
 
   let user;
   try {
-    user = jwt.verify(token, process.env.JWT_SECRET); // Token'i doğrula
-    console.log("Authenticated user:", user);
-
-    // Kullanıcıyı çevrimiçi listeye ekle
-    onlineUsers.add(user.id);
-    io.emit("online", Array.from(onlineUsers));
-    console.log("Emitted online users:", Array.from(onlineUsers));
-
-    // Kullanıcı odaya katılır
-    socket.join(user.id);
-    console.log(`User ${user.id} joined room ${user.id}`);
+    user = await generateToken(token);
+    console.log("Token verified user:", user);
   } catch (error) {
-    console.error("Token verification failed:", error.message);
-    return socket.disconnect(); // Token doğrulaması başarısızsa bağlantıyı sonlandır
+    console.error("Token verification failed:", error);
+    return socket.disconnect(true);
   }
 
-  // Kullanıcı bağlantısını kestiğinde
-  socket.on("disconnect", () => {
-    console.log(`Client disconnected: ${socket.id}`);
-    onlineUsers.delete(user.id); 
-    io.emit("online", Array.from(onlineUsers)); 
-    console.log("Emitted online users after disconnect:", Array.from(onlineUsers));
+  if (!user || !user._id) {
+    console.error("Invalid user data from token");
+    return socket.disconnect(true);
+  }
+
+  const userIdStr = user._id.toString();
+  socket.join(userIdStr);
+  onlineUser.add(userIdStr);
+
+  io.emit("onlineUser", Array.from(onlineUser));
+  console.log("Emitted online users:", Array.from(onlineUser));
+
+  // Handle 'message-page' event
+  socket.on('message-page', async (userId) => {
+    console.log("UserId for message-page:", userId);
+    try {
+      const detailUser = await UserModel.findById(userId).select('-password');
+      if (!detailUser) {
+        console.error("User not found:", userId);
+        return;
+      }
+
+      const isOnline = onlineUser.has(detailUser._id.toString());
+      const payload = {
+        _id: detailUser?._id,
+        name: detailUser?.name,
+        email: detailUser?.email,
+        profile_pic: detailUser?.profile_pic,
+        online: isOnline,
+      };
+
+      console.log("Payload for message-user:", payload);
+      socket.emit('message-user', payload);
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+    }
+  });
+
+  // Handle 'disconnect' event
+  socket.on('disconnect', () => {
+    if (user?._id) {
+      onlineUser.delete(userIdStr);
+      io.emit("onlineUser", Array.from(onlineUser));
+      console.log(`User ${userIdStr} disconnected, updated online users:`, Array.from(onlineUser));
+    } else {
+      console.error("Invalid user ID on disconnect");
+    }
   });
 });
 
-// Sunucuyu başlat
-const PORT = process.env.PORT || 5001;
-server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+module.exports = { server, app };

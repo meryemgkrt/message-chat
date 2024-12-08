@@ -12,6 +12,7 @@ const CardUser = ({user, onClose}) => {
                 name={user?.name}
                 userId={user?._id}
                 imageUrl={user?.profile_pic}
+             
             />
         </div>
         <div>
