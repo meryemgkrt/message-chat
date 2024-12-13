@@ -54,7 +54,7 @@ const RegisterChat = () => {
     setLoading(true);
 
     const URL = `${import.meta.env.VITE_BACKEND_URL}/api/register`;
-
+console.log(URL);
     try {
       const res = await axios.post(URL, formData);
       console.log(res);

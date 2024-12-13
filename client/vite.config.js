@@ -8,12 +8,12 @@ export default defineConfig({
     port: 3000,
     proxy: {
       "/api": {
-        target: "http://localhost:5001",
+        target: "http://localhost:8082",
         changeOrigin: true, // API isteklerini yönlendirmek için
       },
       // WebSocket bağlantılarını desteklemek için aşağıdaki proxy'yi ekleyin
       "/socket.io": {
-        target: "http://localhost:5001",
+        target: "http://localhost:8082",
         ws: true, // WebSocket desteği
         changeOrigin: true, // Origin kontrolünü atlar
         secure: false, // HTTPS kullanmıyorsanız devre dışı bırakın
