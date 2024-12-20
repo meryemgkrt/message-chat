@@ -1,5 +1,6 @@
 import React from "react";
-import { LuUserCircle2 } from "react-icons/lu";
+import { FaUserCircle } from "react-icons/fa";
+
 import { useSelector } from "react-redux";
 
 const Avatar = ({ userId, name, imageUrl, width, height }) => {
@@ -52,14 +53,12 @@ const Avatar = ({ userId, name, imageUrl, width, height }) => {
           className="flex items-center justify-center text-white bg-gray-300 rounded-full"
           style={{ width: `${width}px`, height: `${height}px` }}
         >
-          <LuUserCircle2 size={width / 2} />
+          <FaUserCircle size={width / 2} />
         </div>
       )}
 
       {isOnline && (
-        <div
-          className="bg-green-500 w-3 h-3 absolute bottom-2 -right-1 rounded-full shadow-lg"
-        ></div>
+        <div className="bg-green-500 w-3 h-3 absolute bottom-2 -right-1 rounded-full shadow-lg"></div>
       )}
     </div>
   );

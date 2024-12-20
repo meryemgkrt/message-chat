@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { LuUserCircle2 } from "react-icons/lu";
+import { FaUserCircle } from "react-icons/fa";
+
 import Avatar from "../components/Avatar";
 import { useDispatch } from "react-redux";
 import { setToken, setUser } from "../redux/userSlice";

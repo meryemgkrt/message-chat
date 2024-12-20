@@ -55,7 +55,7 @@ const Home = () => {
   });
 
   socketConnection.on("onlineUser", (data) => {
-    console.log("online user", data);
+   
     dispatch(setOnlineUser(data));
   });
 
